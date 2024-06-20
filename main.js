@@ -55,3 +55,43 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+const postsContainer = document.getElementById('container');
+postsContainer.innerHTML = '';
+
+posts.forEach(postInfos => {
+    const post = document.createElement('div');
+
+    post.classList.add('post');
+    post.innerHTML =
+    `<div class="post__header">
+        <div class="post-meta">                    
+            <div class="post-meta__icon">
+                <img class="profile-pic" src="${postInfos.author.image}" alt="${postInfos.author.name}">                    
+            </div>
+            <div class="post-meta__data">
+                <div class="post-meta__author">${postInfos.author.name}</div>
+                <div class="post-meta__time">${postInfos.created}</div>
+            </div>                    
+        </div>
+    </div>
+    <div class="post__text">${postInfos.content}</div>
+    <div class="post__image">
+        <img src="${postInfos.media}" alt="">
+    </div>
+    <div class="post__footer">
+        <div class="likes js-likes">
+            <div class="likes__cta">
+                <a class="like-button  js-like-button" href="#" data-postid="${postInfos.id}">
+                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                    <span class="like-button__label">Mi Piace</span>
+                </a>
+            </div>
+            <div class="likes__counter">
+                Piace a <b id="like-counter-${postInfos.id}" class="js-likes-counter">${postInfos.id}</b> persone
+            </div>
+        </div> 
+    </div>`;
+    
+    postsContainer.append(post);
+});
