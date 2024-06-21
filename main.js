@@ -57,8 +57,8 @@ const posts = [
 ];
 
 const postsContainer = document.getElementById('container');
-postsContainer.innerHTML = '';
 
+postsContainer.innerHTML = '';
 posts.forEach(postInfos => {
     const post = document.createElement('div');
     let PostProfilePicString;
@@ -69,41 +69,67 @@ posts.forEach(postInfos => {
         completeNameParts = postInfos.author.name.split(' ');
 
         PostProfilePicString =
-        `<div class="profile-pic-default">
-            <span>${completeNameParts[0].charAt(0)}&ThinSpace;${completeNameParts[completeNameParts.length - 1].charAt(0)}</span>
-        </div>`;
+            `<div class="profile-pic-default">
+                <span>${completeNameParts[0].charAt(0)}&ThinSpace;${completeNameParts[completeNameParts.length - 1].charAt(0)}</span>
+            </div>`
+        ;
     }
 
     post.classList.add('post');
     post.innerHTML =
-    `<div class="post__header">
-        <div class="post-meta">                    
-            <div class="post-meta__icon">
-                ${PostProfilePicString}
+        `<div class="post__header">
+            <div class="post-meta">                    
+                <div class="post-meta__icon">
+                    ${PostProfilePicString}
+                </div>
+                <div class="post-meta__data">
+                    <div class="post-meta__author">${postInfos.author.name}</div>
+                    <div class="post-meta__time">${postInfos.created}</div>
+                </div>                    
             </div>
-            <div class="post-meta__data">
-                <div class="post-meta__author">${postInfos.author.name}</div>
-                <div class="post-meta__time">${postInfos.created}</div>
-            </div>                    
         </div>
-    </div>
-    <div class="post__text">${postInfos.content}</div>
-    <div class="post__image">
-        <img src="${postInfos.media}" alt="">
-    </div>
-    <div class="post__footer">
-        <div class="likes js-likes">
-            <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="${postInfos.id}">
-                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                    <span class="like-button__label">Mi Piace</span>
-                </a>
-            </div>
-            <div class="likes__counter">
-                Piace a <b id="like-counter-${postInfos.id}" class="js-likes-counter">${postInfos.id}</b> persone
-            </div>
-        </div> 
-    </div>`;
+        <div class="post__text">${postInfos.content}</div>
+        <div class="post__image">
+            <img src="${postInfos.media}" alt="">
+        </div>
+        <div class="post__footer">
+            <div class="likes js-likes">
+                <div class="likes__cta">
+                    <a class="like-button  js-like-button" href="#" data-postid="${postInfos.id}">
+                        <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                        <span class="like-button__label">Mi Piace</span>
+                    </a>
+                </div>
+                <div class="likes__counter">
+                    Piace a <b id="like-counter-${postInfos.id}" class="js-likes-counter">${postInfos.likes}</b> persone
+                </div>
+            </div> 
+        </div>`
+    ;
     
     postsContainer.append(post);
+});
+
+const likeBtns = document.querySelectorAll('.js-like-button');
+
+const PostsLiked = [];
+
+likeBtns.forEach(Btn => {
+    Btn.addEventListener('click' , function (e) {
+        e.preventDefault()
+        
+        const id = parseInt(this.dataset.postid);
+        const postContainingBtn = posts.find(post => post.id === id);
+
+        if(this.classList.contains('like-button--liked')) {
+            PostsLiked.splice(PostsLiked.indexOf(id) , 1);
+            --postContainingBtn.likes;
+        } else {
+            PostsLiked.push(id);
+            ++postContainingBtn.likes;
+        }
+        
+        this.classList.toggle('like-button--liked');
+        document.getElementById(`like-counter-${id}`).innerHTML = `${postContainingBtn.likes}`;
+    });
 });
