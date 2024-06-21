@@ -75,6 +75,9 @@ posts.forEach(postInfos => {
         ;
     }
 
+    const creationDate = new Date(postInfos.created);
+    const creationString = document.documentElement.lang === 'it' ? `${creationDate.getDate()}&VeryThinSpace;/&VeryThinSpace;${creationDate.getMonth() + 1}&VeryThinSpace;/&VeryThinSpace;${creationDate.getFullYear()}` : `${creationDate.getMonth() + 1}&VeryThinSpace;/&VeryThinSpace;${creationDate.getDate()}&VeryThinSpace;/&VeryThinSpace;${creationDate.getFullYear()}`;
+
     post.classList.add('post');
     post.innerHTML =
         `<div class="post__header">
@@ -84,7 +87,7 @@ posts.forEach(postInfos => {
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${postInfos.author.name}</div>
-                    <div class="post-meta__time">${postInfos.created}</div>
+                    <div class="post-meta__time">${creationString}</div>
                 </div>                    
             </div>
         </div>
