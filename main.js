@@ -61,13 +61,25 @@ postsContainer.innerHTML = '';
 
 posts.forEach(postInfos => {
     const post = document.createElement('div');
+    let PostProfilePicString;
+
+    if(postInfos.author.image !== null) {
+        PostProfilePicString = `<img class="profile-pic" src="${postInfos.author.image}" alt="${postInfos.author.name}">`;
+    } else {
+        completeNameParts = postInfos.author.name.split(' ');
+
+        PostProfilePicString =
+        `<div class="profile-pic-default">
+            <span>${completeNameParts[0].charAt(0)}&ThinSpace;${completeNameParts[completeNameParts.length - 1].charAt(0)}</span>
+        </div>`;
+    }
 
     post.classList.add('post');
     post.innerHTML =
     `<div class="post__header">
         <div class="post-meta">                    
             <div class="post-meta__icon">
-                <img class="profile-pic" src="${postInfos.author.image}" alt="${postInfos.author.name}">                    
+                ${PostProfilePicString}
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${postInfos.author.name}</div>
